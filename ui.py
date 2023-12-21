@@ -38,7 +38,17 @@ class ForecastInterface():
         self.country_entry = tkinter.Entry(textvariable=country, font=ENTRY_FONT)
         self.country_entry.grid(row=2, column=1, sticky=tkinter.EW, pady=(0, 10))
 
+        # tkinter Buttons
+        self.get_forecast_btn = tkinter.Button(text="Get Forecast", 
+                                               highlightthickness=0, 
+                                               command=lambda: self.fill_forecast_info(city.get(), country.get()),
+                                               font=BTN_FONT)
+        self.get_forecast_btn.grid(row=3,column=0, columnspan=3, sticky=tkinter.EW, padx=(20, 20))
+
 
 
         self.window.mainloop()
+
+    def fill_forecast_info(self, city:str, country:str) -> None:
+        pass
 
