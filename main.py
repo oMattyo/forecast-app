@@ -1,4 +1,5 @@
 import requests
+from ui import ForecastInterface
 from api import OW_BASE_URL, OW_API_KEY
 
 # Test API call with API Key and Base Url
@@ -10,3 +11,5 @@ data = response.json()
 forecast_data = data["list"]
 
 print(forecast_data)
+
+ui = ForecastInterface()
