@@ -1,8 +1,13 @@
 import tkinter
+from location import ForecastLocation
+from weather import WeatherForecast
 from constants import * 
 
 class ForecastInterface():
-    def __init__(self) -> None:
+    def __init__(self, location:ForecastLocation, weather:WeatherForecast) -> None:
+        self.weather = weather
+        self.location = location
+
         # tkinter - main window
         self.window = tkinter.Tk()
         self.window.title("Forecast App")
@@ -10,7 +15,7 @@ class ForecastInterface():
 
         # tkinter - location labels
         self.main_label = tkinter.Label(text="Forecast Conditions For:", 
-                                        fg=TITLE_COLOR, 
+                                        fg=LABEL_COLOR, 
                                         bg=THEME_BG_COLOR, 
                                         font=TITLE_FONT)
         self.main_label.grid(row=0, column=0, columnspan=3, pady=10)
@@ -31,10 +36,12 @@ class ForecastInterface():
         city = tkinter.StringVar()
         country = tkinter.StringVar()
 
+        # TODO - consider adding input validation to prevent numericals from being entered.
         self.city_entry = tkinter.Entry(textvariable=city, font=ENTRY_FONT, bg=ENTRY_BG_COLOR)
         self.city_entry.grid(row=1, column=1, sticky=tkinter.EW)
         self.city_entry.focus()
 
+        # TODO - consider adding input validation to prevent numericals from being entered.
         self.country_entry = tkinter.Entry(textvariable=country, font=ENTRY_FONT, bg=ENTRY_BG_COLOR)
         self.country_entry.grid(row=2, column=1, sticky=tkinter.EW, pady=(0, 10))
 
@@ -115,5 +122,25 @@ class ForecastInterface():
         self.window.mainloop()
 
     def fill_forecast_info(self, city:str, country:str) -> None:
-        pass
+        self.location.location_request(city, country)
+        self.weather.forecast_request(self.location.lat, self.location.lon)
+
+        # TODO - Consider a refactor where you loop through canvas widgets to fill with data
+        # config forecast one canvas with data
+        self.forecast_one_canvas.itemconfig(self.fcast_one_condition, text=f"Condition: {self.weather.w_conditions[0].condition.capitalize()}")
+        self.forecast_one_canvas.itemconfig(self.fcast_one_clouds, text=f"Cloud Coverage: {self.weather.w_conditions[0].cloud_coverage}%")
+        self.forecast_one_canvas.itemconfig(self.fcast_one_dt, text=f"{self.weather.w_conditions[0].date} | {self.weather.w_conditions[0].time}")
+        # config forecast two canvas with data
+        self.forecast_two_canvas.itemconfig(self.fcast_two_condition, text=f"Condition: {self.weather.w_conditions[1].condition.capitalize()}")
+        self.forecast_two_canvas.itemconfig(self.fcast_two_clouds, text=f"Cloud Coverage: {self.weather.w_conditions[1].cloud_coverage}%")
+        self.forecast_two_canvas.itemconfig(self.fcast_two_dt, text=f"{self.weather.w_conditions[1].date} | {self.weather.w_conditions[1].time}")
+        # config forecast three canvas with data
+        self.forecast_three_canvas.itemconfig(self.fcast_three_condition, text=f"Condition: {self.weather.w_conditions[2].condition.capitalize()}")
+        self.forecast_three_canvas.itemconfig(self.fcast_three_clouds, text=f"Cloud Coverage: {self.weather.w_conditions[2].cloud_coverage}%")
+        self.forecast_three_canvas.itemconfig(self.fcast_three_dt, text=f"{self.weather.w_conditions[2].date} | {self.weather.w_conditions[2].time}")
+        # config forecast four canvas with data
+        self.forecast_four_canvas.itemconfig(self.fcast_four_condition, text=f"Condition: {self.weather.w_conditions[3].condition.capitalize()}")
+        self.forecast_four_canvas.itemconfig(self.fcast_four_clouds, text=f"Cloud Coverage: {self.weather.w_conditions[3].cloud_coverage}%")
+        self.forecast_four_canvas.itemconfig(self.fcast_four_dt, text=f"{self.weather.w_conditions[3].date} | {self.weather.w_conditions[3].time}")
+
 
